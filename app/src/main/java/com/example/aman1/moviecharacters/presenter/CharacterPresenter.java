@@ -38,6 +38,7 @@ public class CharacterPresenter {
 
                     @Override
                     public void onNext(CharacterWrapper value) {
+
                         itemListActivity.showList(value.getRelatedTopics());
                     }
 

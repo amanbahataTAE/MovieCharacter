@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,13 @@ import android.widget.TextView;
 
 
 import com.example.aman1.moviecharacters.dummy.DummyContent;
+import com.example.aman1.moviecharacters.model.Character;
 import com.example.aman1.moviecharacters.model.RelatedTopic;
 import com.example.aman1.moviecharacters.presenter.CharacterPresenter;
 import com.example.aman1.moviecharacters.services.RequestConnection;
 import com.example.aman1.moviecharacters.services.RequestInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +38,9 @@ public class ItemListActivity extends AppCompatActivity {
 
     private CharacterPresenter characterPresenter;
     private RequestInterface requestInterface;
-    private List<RelatedTopic> relatedTopic;
+    private ArrayList<Character> characterList;
+
+    private RecyclerView recyclerView;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -69,9 +74,8 @@ public class ItemListActivity extends AppCompatActivity {
             mTwoPane = true;
         }
 
-        View recyclerView = findViewById(R.id.item_list);
+        recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
-        setupRecyclerView((RecyclerView) recyclerView);
 
 
         requestInterface = RequestConnection.getConnection();
@@ -79,27 +83,44 @@ public class ItemListActivity extends AppCompatActivity {
 
         characterPresenter.getCharactersList();
 
+
+
+
     }
 
 
     /**
      * Recycler view adaptor
-     * @param recyclerView
      */
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    private void setupRecyclerView() {
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, characterList, mTwoPane));
     }
 
     public void showList(List<RelatedTopic> relatedTopics) {
+        characterList = new ArrayList<>();
 
+        for (RelatedTopic character : relatedTopics) {
+            characterList.add(getCharacterName(character.getText()));
+        }
+
+        setupRecyclerView();
     }
+
+    private Character getCharacterName(String text){
+        String[] name = text.split("-", 2);
+        Character singleCharacter = new Character(name[0], name[1]);
+        return singleCharacter;
+    }
+
+
+
 
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final ItemListActivity mParentActivity;
-        private final List<DummyContent.DummyItem> mValues;
+        private final List<Character> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
@@ -124,7 +145,7 @@ public class ItemListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(ItemListActivity parent,
-                                      List<DummyContent.DummyItem> items,
+                                      List<Character> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -140,10 +161,10 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.mIdView.setText(String.valueOf(position + 1));
+            holder.mContentView.setText(mValues.get(position).getName());
 
-            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setTag(mValues.get(position).getName());
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 

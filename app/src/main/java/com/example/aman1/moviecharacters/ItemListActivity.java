@@ -3,20 +3,17 @@ package com.example.aman1.moviecharacters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.example.aman1.moviecharacters.dummy.DummyContent;
 import com.example.aman1.moviecharacters.model.Character;
 import com.example.aman1.moviecharacters.model.RelatedTopic;
 import com.example.aman1.moviecharacters.presenter.CharacterPresenter;
@@ -125,10 +122,12 @@ public class ItemListActivity extends AppCompatActivity {
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DummyContent.DummyItem item = (DummyContent.DummyItem) view.getTag();
+                Character item = (Character) mValues.get((int)view.getTag());
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
-                    arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_NAME, item.getName());
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_TEXT, item.getText());
+
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -137,8 +136,8 @@ public class ItemListActivity extends AppCompatActivity {
                 } else {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity.class);
-                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id);
-
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_NAME, item.getName());
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_TEXT, item.getText());
                     context.startActivity(intent);
                 }
             }
@@ -164,7 +163,7 @@ public class ItemListActivity extends AppCompatActivity {
             holder.mIdView.setText(String.valueOf(position + 1));
             holder.mContentView.setText(mValues.get(position).getName());
 
-            holder.itemView.setTag(mValues.get(position).getName());
+            holder.itemView.setTag(position);
             holder.itemView.setOnClickListener(mOnClickListener);
         }
 

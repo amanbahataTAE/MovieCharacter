@@ -22,14 +22,18 @@ android {
             versionCode 1
             versionName '1.0'
             flavorDimensions "default"
+            buildConfigField 'String', 'API_URL', '"http://api.duckduckgo.com/?q=family+guy+characters&format=json"'
+
 
 
         }
-        GameOfThrones {
-            applicationId 'com.example.aman1.moviecharacters.gameOfThrones'
+        Simpsons {
+            applicationId 'com.example.aman1.moviecharacters.simpsons'
             versionCode 1
             versionName '1.0'
             flavorDimensions "default"
+            buildConfigField 'String', 'API_URL', '"http://api.duckduckgo.com/?q=simpsons+characters&format=json"'
+
         }
     }
 }

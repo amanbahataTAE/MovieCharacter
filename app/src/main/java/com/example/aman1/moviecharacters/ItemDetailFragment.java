@@ -1,6 +1,7 @@
 package com.example.aman1.moviecharacters;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -22,6 +25,8 @@ public class ItemDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_NAME = "item_name";
     public static final String ARG_ITEM_TEXT = "item_text";
+    public static final String ARG_ITEM_ICON = "item_icon";
+
 
 
     /**
@@ -29,6 +34,8 @@ public class ItemDetailFragment extends Fragment {
      */
     private String mItemName;
     private String mItemText;
+    private String mItemIcon;
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -47,6 +54,7 @@ public class ItemDetailFragment extends Fragment {
             // to load content from a content provider.
             mItemName = getArguments().getString(ARG_ITEM_NAME);
             mItemText = getArguments().getString(ARG_ITEM_TEXT);
+            mItemIcon = getArguments().getString(ARG_ITEM_ICON);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -63,7 +71,16 @@ public class ItemDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItemName != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItemText);
+            ((TextView) rootView.findViewById(R.id.item_detail_text)).setText(mItemText);
+
+            Uri uri = Uri.parse(mItemIcon);
+            SimpleDraweeView draweeView = (SimpleDraweeView) rootView.findViewById(R.id.my_image_view);
+            if (!mItemIcon.isEmpty() && mItemIcon != "") {
+                draweeView.setImageURI(uri);
+            }else {
+                TextView imageAnavailable = (TextView) rootView.findViewById(R.id.item_detail_not_available);
+                imageAnavailable.setVisibility(View.VISIBLE);
+            }
         }
 
         return rootView;

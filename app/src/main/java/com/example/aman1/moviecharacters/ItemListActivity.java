@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 import com.example.aman1.moviecharacters.model.Character;
+import com.example.aman1.moviecharacters.model.Icon;
 import com.example.aman1.moviecharacters.model.RelatedTopic;
 import com.example.aman1.moviecharacters.presenter.CharacterPresenter;
 import com.example.aman1.moviecharacters.services.RequestConnection;
@@ -98,15 +99,15 @@ public class ItemListActivity extends AppCompatActivity {
         characterList = new ArrayList<>();
 
         for (RelatedTopic character : relatedTopics) {
-            characterList.add(getCharacterName(character.getText()));
+            characterList.add(getCharacterName(character.getText(), character.getIcon()));
         }
 
         setupRecyclerView();
     }
 
-    private Character getCharacterName(String text){
-        String[] name = text.split("-", 2);
-        Character singleCharacter = new Character(name[0], name[1]);
+    private Character getCharacterName(String text, Icon icon){
+        String[] name = text.split(" - ", 2);
+        Character singleCharacter = new Character(name[0], name[1], icon);
         return singleCharacter;
     }
 
@@ -127,6 +128,8 @@ public class ItemListActivity extends AppCompatActivity {
                     Bundle arguments = new Bundle();
                     arguments.putString(ItemDetailFragment.ARG_ITEM_NAME, item.getName());
                     arguments.putString(ItemDetailFragment.ARG_ITEM_TEXT, item.getText());
+                    arguments.putString(ItemDetailFragment.ARG_ITEM_ICON, item.getIcon().getURL());
+
 
                     ItemDetailFragment fragment = new ItemDetailFragment();
                     fragment.setArguments(arguments);
@@ -138,6 +141,8 @@ public class ItemListActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, ItemDetailActivity.class);
                     intent.putExtra(ItemDetailFragment.ARG_ITEM_NAME, item.getName());
                     intent.putExtra(ItemDetailFragment.ARG_ITEM_TEXT, item.getText());
+                    intent.putExtra(ItemDetailFragment.ARG_ITEM_ICON, item.getIcon().getURL());
+
                     context.startActivity(intent);
                 }
             }

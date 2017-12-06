@@ -7,10 +7,13 @@ package com.example.aman1.moviecharacters.model;
 public class Character {
     private String name;
     private String text;
+    private Icon icon;
 
-    public Character(String name, String text) {
+
+    public Character(String name, String text, Icon icon) {
         this.name = name;
         this.text = text;
+        this.icon = icon;
     }
 
     public String getName() {
@@ -28,4 +31,13 @@ public class Character {
     public void setText(String text) {
         this.text = text;
     }
+
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
+
 }

@@ -55,6 +55,8 @@ public class ItemDetailActivity extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putString(ItemDetailFragment.ARG_ITEM_NAME,getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_NAME));
             arguments.putString(ItemDetailFragment.ARG_ITEM_TEXT,getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_TEXT));
+            arguments.putString(ItemDetailFragment.ARG_ITEM_ICON,getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_ICON));
+
 
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);
